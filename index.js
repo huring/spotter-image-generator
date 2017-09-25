@@ -12,7 +12,7 @@ const imgSize = {
 // Internal variables
 let count = 0,
     files = 0,
-    shootingStringMax = 4,
+    shootingStringMax = 4, // generates 5 files because 0... 
     baseTarget = './assets/Target.png';
 
 // We start by cleaning out the directory
