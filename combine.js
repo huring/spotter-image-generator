@@ -49,12 +49,17 @@ function generateImage(img64) {
 
     if (files <= 3) {
         
-        // console.log(files);
+        var fileName = 'target-' + helpers.randomAlphaNumeric(5) + '.png';
+        console.log(fileName);
 
-        fs.writeFile('./img/target_generated.png', buf, (err) => {
+        fs.writeFile('./img/'+fileName, buf, (err) => {
             if (err) throw err;
+
+            baseTarget = './img/'+fileName;
+            imgMerge();
+
         });
     }
-    
+
     files++;
 }
