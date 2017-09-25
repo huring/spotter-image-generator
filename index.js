@@ -12,7 +12,7 @@ const imgSize = {
 // Internal variables
 let count = 0,
     files = 0,
-    shootingStringMax = 10,
+    shootingStringMax = 4,
     baseTarget = './assets/Target.png';
 
 // We start by cleaning out the directory
@@ -20,7 +20,7 @@ helpers.rmDir('img/', false);
 
 imgMerge();
 
-if (process.argv[2].length > 0)
+if (process.argv[2])
     shootingStringMax = process.argv[2] - 1;
 
 async function imgMerge() {
@@ -53,7 +53,6 @@ function generateImage(img64) {
 
             baseTarget = './img/'+fileName;
             imgMerge();
-
         });
     } else {
         console.log("Images generated");
