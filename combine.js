@@ -12,30 +12,35 @@ const imgSize = {
     height: 500
 };
 
-var baseTarget = './assets/Target.png';
+for (var i = 0; i < 5; i++) {
 
-mergeImages(['./assets/Target.png', {
-        src: './assets/Shot.png', 
-        x: getRandomInt(imgSize.width), 
-        y: getRandomInt(imgSize.width)
-    }], 
-    {
-        Canvas: Canvas
-    }
-)
-.then(b64 => {
-    
+    mergeImages(
+        [   './assets/Target.png', 
+        {   src: './assets/Shot.png', 
+            x: getRandomInt(imgSize.width), 
+            y: getRandomInt(imgSize.width)
+        }], 
+        {
+            Canvas: Canvas
+        }
+    ).then(b64 => {
+        
+        generateImage(b64, i);
+           
+        }
+    );
+
+}
+
+function generateImage(img64, count) {
+    console.log('generate image');
     // Cleanup
-    var data = b64.replace(/^data:image\/\w+;base64,/, "");
+    var data = img64.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
-    fs.writeFile('./img/target_generated.png', buf, (err) => {
+    fs.writeFile('./img/target_generated-'+count+'.png', buf, (err) => {
         if (err) throw err;
     });
 }
-    
-).catch(function(err) {
-    // console.error(err);
-});
 
 function getRandomInt(max) {
     min = Math.ceil(0);
