@@ -14,37 +14,47 @@ const imgSize = {
 };
 
 var count = 0;
-var baseImage = './assets/Target.png';
+var files = 0;
+var baseTarget = './assets/Target.png';
 
-for (var i = 0; i < 5; i++) {
+imgMerge();
 
-    if (i != 0)
-        baseImage = './img/target_generated-'+(i-1)+'.png';
+async function imgMerge() {
 
-    console.log(baseImage);
+    console.log(baseTarget);
 
-    mergeImages(
-        [   baseImage, 
-        {   src: './assets/Shot.png', 
+    let merge = await mergeImages([   
+        baseTarget, 
+        {   
+            src: './assets/Shot.png', 
             x: helpers.randomInt(imgSize.width), 
             y: helpers.randomInt(imgSize.width)
         }], 
         {
             Canvas: Canvas
         }
-    ).then(function(b64) {
-            generateImage(b64, count);
-            count++;
-        }
-    );
-
+    )
+    generateImage(merge);
 }
+//     .then(function(b64) {
+//         generateImage(b64, count);
+//         count++;
+//     }
+// );
 
-function generateImage(img64, count) {
+function generateImage(img64) {
     // Cleanup
     var data = img64.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
-    fs.writeFile('./img/target_generated-'+count+'.png', buf, (err) => {
-        if (err) throw err;
-    });
+
+    if (files <= 3) {
+        
+        // console.log(files);
+
+        fs.writeFile('./img/target_generated.png', buf, (err) => {
+            if (err) throw err;
+        });
+    }
+    
+    files++;
 }
