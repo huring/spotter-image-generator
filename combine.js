@@ -19,8 +19,6 @@ imgMerge();
 
 async function imgMerge() {
 
-    console.log(baseTarget);
-
     let merge = await mergeImages([   
         baseTarget, 
         {   
