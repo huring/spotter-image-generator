@@ -1,10 +1,6 @@
 const mergeImages = require('merge-images');
 const fs = require("fs");
-var sys = require("util");
 var helpers = require('./js/lib/helpers');
-
-const shootingstring = 5;
-
 var Canvas = require('canvas'), 
     Image = Canvas.Image;
 
@@ -13,9 +9,11 @@ const imgSize = {
     height: 500
 };
 
-var count = 0;
-var files = 0;
-var baseTarget = './assets/Target.png';
+// Internal variables
+let count = 0,
+    files = 0,
+    shootingStringMax = 10,
+    baseTarget = './assets/Target.png';
 
 imgMerge();
 
@@ -36,20 +34,15 @@ async function imgMerge() {
     )
     generateImage(merge);
 }
-//     .then(function(b64) {
-//         generateImage(b64, count);
-//         count++;
-//     }
-// );
 
 function generateImage(img64) {
-    // Cleanup
+
     var data = img64.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
 
-    if (files <= 3) {
+    if (files <= shootingStringMax) {
         
-        var fileName = 'target-' + helpers.randomAlphaNumeric(5) + '.png';
+        var fileName = files + '-target.png';
         console.log(fileName);
 
         fs.writeFile('./img/'+fileName, buf, (err) => {
