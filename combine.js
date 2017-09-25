@@ -15,7 +15,13 @@ let count = 0,
     shootingStringMax = 10,
     baseTarget = './assets/Target.png';
 
+// We start by cleaning out the directory
+helpers.rmDir('img/', false);
+
 imgMerge();
+
+if (process.argv[2].length > 0)
+    shootingStringMax = process.argv[2] - 1;
 
 async function imgMerge() {
 
@@ -40,7 +46,7 @@ function generateImage(img64) {
 
     if (files <= shootingStringMax) {
         
-        var fileName = files + '-target.png';
+        var fileName = (files+1) + '-target.png';
 
         fs.writeFile('./img/'+fileName, buf, (err) => {
             if (err) throw err;
