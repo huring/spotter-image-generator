@@ -41,7 +41,6 @@ function generateImage(img64) {
     if (files <= shootingStringMax) {
         
         var fileName = files + '-target.png';
-        console.log(fileName);
 
         fs.writeFile('./img/'+fileName, buf, (err) => {
             if (err) throw err;
@@ -50,6 +49,8 @@ function generateImage(img64) {
             imgMerge();
 
         });
+    } else {
+        console.log("Images generated");
     }
 
     files++;
