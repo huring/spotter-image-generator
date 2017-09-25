@@ -9,6 +9,8 @@
   "author": "Lars Huring",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^1.6.7",
+    "merge-images": "^1.0.5",
     "pngjs-image": "^0.11.7"
   }
 }
