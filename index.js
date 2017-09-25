@@ -1,13 +1,63 @@
-var PNGImage = require('pngjs-image');
+const mergeImages = require('merge-images');
+const fs = require("fs");
+var helpers = require('./js/lib/helpers');
+var Canvas = require('canvas'), 
+    Image = Canvas.Image;
 
-var image = PNGImage.createImage(100,100);
+const imgSize = {
+    width: 500,
+    height: 500
+};
 
-console.log(image.getWidth());
-console.log(image.getHeight());
+// Internal variables
+let count = 0,
+    files = 0,
+    shootingStringMax = 10,
+    baseTarget = './assets/Target.png';
 
-image.setAt(50, 50, {red: 0, green: 255, blue: 0, alpha: 255});
+// We start by cleaning out the directory
+helpers.rmDir('img/', false);
 
-image.writeImage('img/file.png', function(err) {
-    if (err) throw err;
-    console.log('Written to file');
-});
+imgMerge();
+
+if (process.argv[2].length > 0)
+    shootingStringMax = process.argv[2] - 1;
+
+async function imgMerge() {
+
+    let merge = await mergeImages([   
+        baseTarget, 
+        {   
+            src: './assets/Shot.png', 
+            x: helpers.randomInt(imgSize.width), 
+            y: helpers.randomInt(imgSize.width)
+        }], 
+        {
+            Canvas: Canvas
+        }
+    )
+    generateImage(merge);
+}
+
+function generateImage(img64) {
+
+    var data = img64.replace(/^data:image\/\w+;base64,/, "");
+    var buf = new Buffer(data, 'base64');
+
+    if (files <= shootingStringMax) {
+        
+        var fileName = (files+1) + '-target.png';
+
+        fs.writeFile('./img/'+fileName, buf, (err) => {
+            if (err) throw err;
+
+            baseTarget = './img/'+fileName;
+            imgMerge();
+
+        });
+    } else {
+        console.log("Images generated");
+    }
+
+    files++;
+}
