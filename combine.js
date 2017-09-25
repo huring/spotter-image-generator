@@ -14,43 +14,28 @@ const imgSize = {
 
 var baseTarget = './assets/Target.png';
 
-for (var index = 0; index < shootingstring; index++) {
-    if (index >= 1)
-        baseTarget = './img/target_generated-'+(index-1)+'.png';
-
-    var img = generate(baseTarget).then(function() { console.log('waiting...') } );
-
-    console.log(img);
-
-    // var buf = new Buffer(img, 'base64');
-    // fs.writeFile('./img/target_generated'+index+'.png', buf, (err) => {
-    //     if (err) throw err;
-    // });
-
-}
-
-function generate(baseTarget) {
-
-    mergeImages([baseTarget, {
-            src: './assets/Shot.png', 
-            x: getRandomInt(imgSize.width), 
-            y: getRandomInt(imgSize.width)
-        }], 
-        {
-            Canvas: Canvas
-        }
-    )
-    .then(b64 => {
-        
-        // Cleanup
-        var data = b64.replace(/^data:image\/\w+;base64,/, "");
-        return data;
+mergeImages(['./assets/Target.png', {
+        src: './assets/Shot.png', 
+        x: getRandomInt(imgSize.width), 
+        y: getRandomInt(imgSize.width)
+    }], 
+    {
+        Canvas: Canvas
     }
-        
-    ).catch(function(err) {
-        // console.error(err);
+)
+.then(b64 => {
+    
+    // Cleanup
+    var data = b64.replace(/^data:image\/\w+;base64,/, "");
+    var buf = new Buffer(data, 'base64');
+    fs.writeFile('./img/target_generated.png', buf, (err) => {
+        if (err) throw err;
     });
 }
+    
+).catch(function(err) {
+    // console.error(err);
+});
 
 function getRandomInt(max) {
     min = Math.ceil(0);
